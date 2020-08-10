@@ -15,8 +15,8 @@ echo \
 10.26.1.103  rac12c2-vip
 
 #RAC12C Private
-10.26.1.104  rac12c1-priv
-10.26.1.105  rac12c2-priv
+1.1.1.1  rac12c1-priv
+1.1.1.2  rac12c2-priv
 
 #RAC12C Scan IP
 10.26.1.106  rac-scan
