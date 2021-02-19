@@ -18,13 +18,22 @@ MONGO_PORT=
 MONGO_CFG=
 
 if [ -z $DATA_DIR ];then
-		DATA_DIR=/var/lib/mongo
+        DATA_DIR=/var/lib/mongo
+        if [ ! -d $DATA_DIR ];then
+                mkdir -p $DATA_DIR
+        fi
 fi
 if [ -z $LOG_DIR ];then
         LOG_DIR=/var/log/mongodb
+        if [ ! -d $LOG_DIR ];then
+                mkdir -p $LOG_DIR
+        fi
 fi
 if [ -z $PID_FILE_DIR ];then
         PID_FILE_DIR=/var/run/mongodb
+        if [ ! -d $PID_FILE_DIR ];then
+                mkdir -p $PID_FILE_DIR
+        fi
 fi
 if [ -z $MONGO_PORT ];then
         MONGO_PORT=27017
@@ -95,15 +104,15 @@ sudo semanage fcontext -a -t mongod_log_t $LOG_DIR.*
 sudo chcon -Rv -u system_u -t mongod_log_t $LOG_DIR
 restorecon -R -v $LOG_DIR
 
-sudo semanage fcontext -a -t mongod_var_run_t $MONGO_CFG.*
-sudo chcon -Rv -u system_u -t mongod_var_run_t $MONGO_CFG
-restorecon -R -v $MONGO_CFG
+sudo semanage fcontext -a -t mongod_var_run_t $PID_FILE_DIR.*
+sudo chcon -Rv -u system_u -t mongod_var_run_t $PID_FILE_DIR
+restorecon -R -v $PID_FILE_DIR
 
 sudo semanage port -a -t mongod_port_t -p tcp $MONGO_PORT
 
 
 # systemd启动脚本
-cat > /usr/lib/systemd/system/mongo.servive <<EOF
+cat > /usr/lib/systemd/system/mongo.service <<EOF
 [Unit]
 Description=MongoDB Database Server
 Documentation=https://docs.mongodb.org/manual
