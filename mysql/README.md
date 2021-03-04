@@ -1,0 +1,1 @@
+传入参数Full代表全量备份，Incremental代表增量备份日志
