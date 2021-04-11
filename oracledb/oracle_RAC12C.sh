@@ -127,8 +127,21 @@ grid soft memlock $MEMLOCK_VALUE" > /etc/security/limits.d/99-oracle_RAC12C.conf
 
 
 # it should be moved to /etc/sysctl.d/
+
+# shmall:
+# This parameter sets the total amount of shared memory pages that can be used system wide. Hence, SHMALL should always be at least ceil(shmmax/PAGE_SIZE).
+# If you are not sure what the default PAGE_SIZE is on your Linux system, you can run the following command:
+# getconf PAGE_SIZE
+
+# shmmax:
+# This value can be used to query and set the run time limit on the maximum shared memory segment size that can be created.
+# Shared memory segments up to 1Gb are now supported in the kernel.  This value defaults to SHMMAX.
+
+# shmmni:
+#This file specifies the system-wide maximum number of System V shared memory segments that can be created.
 declare -i PAGE_SIZE_VALUE=$(getconf PAGE_SIZE)
 declare -i KERNEL_SHMMAX=$(echo "$TOTAL_MEMORY/2"|bc)
+# so KERNEL_SHMALL must greater than SGA ?
 declare -i KERNEL_SHMALL=$(echo "($TOTAL_MEMORY*2)/($PAGE_SIZE_VALUE*5)"|bc)
 echo \
 "# Note: This value limits concurrent outstanding requests and should be set to avoid I/O subsystem failures.
