@@ -15,10 +15,13 @@ if [ -f create_table_ddl.sql ];then
 	rm -rf create_table_ddl.sql
 fi
 if [ -f discard_table.sql ];then
-        rm -rf discard_table.sql
+    rm -rf discard_table.sql
 fi
 if [ -f import_table.sql ];then
-        rm -rf import_table.sql
+    rm -rf import_table.sql
+fi
+if [ -z DB_CHARACTER_SET ];then
+	DB_CHARACTER_SET=utf8
 fi
 
 #创建必要的数据库
